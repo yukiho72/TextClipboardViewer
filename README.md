@@ -6,7 +6,12 @@
 
 ## ダウンロード
 
-[Releases](https://github.com/yukiho72/TextClipboardViewer/releases) から `TextClipboardViewer.exe` を入手してダブルクリックで起動します（.NET のインストールは不要）。
+[Releases](https://github.com/yukiho72/TextClipboardViewer/releases) から zip を入手して展開し、`TextClipboardViewer.exe` を起動します。2種類あります。
+
+| ファイル | サイズ | 必要環境 |
+|---|---|---|
+| `TextClipboardViewer-*-standalone-win-x64.zip` | 約65MB | なし(.NET同梱) |
+| `TextClipboardViewer-*-net8-win-x64.zip` | 約85KB | [.NET 8 デスクトップランタイム](https://dotnet.microsoft.com/download/dotnet/8.0) |
 
 ## 機能
 

@@ -6,7 +6,12 @@ A resident Windows app that always shows the text on your clipboard in a borderl
 
 ## Download
 
-Get `TextClipboardViewer.exe` from the [Releases](https://github.com/yukiho72/TextClipboardViewer/releases) page and double-click to run (no .NET installation required).
+Get a zip from the [Releases](https://github.com/yukiho72/TextClipboardViewer/releases) page, extract it, and run `TextClipboardViewer.exe`. Two flavors are available:
+
+| File | Size | Requirements |
+|---|---|---|
+| `TextClipboardViewer-*-standalone-win-x64.zip` | ~65MB | None (.NET bundled) |
+| `TextClipboardViewer-*-net8-win-x64.zip` | ~85KB | [.NET 8 Desktop Runtime](https://dotnet.microsoft.com/download/dotnet/8.0) |
 
 ## Features
 
