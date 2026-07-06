@@ -482,3 +482,6 @@ $RECYCLE.BIN/
 
 # Vim temporary swap files
 *.swp
+
+# 設計ドキュメント(ローカル専用・公開しない)
+/docs/
