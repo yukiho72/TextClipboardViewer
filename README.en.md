@@ -19,6 +19,7 @@ Get a zip from the [Releases](https://github.com/yukiho72/TextClipboardViewer/re
 - Drag anywhere on the borderless window to move it; drag the edges to resize
 - Hover to reveal ⚙ (settings) / 🗑 (clear clipboard)
 - Right-click menu for "Hide" and "Exit"
+- Click-through (when enabled, the window passes mouse input through so you can operate the app behind it). Toggle from the settings panel or the system tray's right-click menu
 - 4 theme presets (Dark / Light / Translucent / Transparent)
 - Real-time adjustment of font, font size, text color, background color, and opacity via sliders
 - Japanese / English UI (follows the OS language on first run)
