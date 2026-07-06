@@ -1,8 +1,10 @@
 using System.ComponentModel;
+using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
+using System.Windows.Interop;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Media.Effects;
@@ -74,6 +76,7 @@ public partial class MainWindow : Window
         ClipText.Effect = _settings.TextShadow
             ? new DropShadowEffect { BlurRadius = 6, ShadowDepth = 1, Opacity = 0.8, Color = Colors.Black }
             : null;
+        ApplyClickThrough(_settings.ClickThrough);
     }
 
     private static Color ParseColorOrDefault(string hex, Color fallback)
@@ -86,6 +89,25 @@ public partial class MainWindow : Window
         {
             return fallback;
         }
+    }
+
+    private const int GWL_EXSTYLE = -20;
+    private const int WS_EX_TRANSPARENT = 0x20;
+
+    [DllImport("user32.dll", EntryPoint = "GetWindowLongPtrW")]
+    private static extern IntPtr GetWindowLongPtr(IntPtr hwnd, int index);
+
+    [DllImport("user32.dll", EntryPoint = "SetWindowLongPtrW")]
+    private static extern IntPtr SetWindowLongPtr(IntPtr hwnd, int index, IntPtr newLong);
+
+    /// <summary>WS_EX_TRANSPARENT を付け外ししてマウス操作の透過を切り替える。</summary>
+    private void ApplyClickThrough(bool enabled)
+    {
+        var hwnd = new WindowInteropHelper(this).Handle;
+        if (hwnd == IntPtr.Zero) return; // HWND未生成(コンストラクタ段階)はOnSourceInitializedで適用
+        long ex = GetWindowLongPtr(hwnd, GWL_EXSTYLE).ToInt64();
+        long updated = enabled ? ex | WS_EX_TRANSPARENT : ex & ~WS_EX_TRANSPARENT;
+        SetWindowLongPtr(hwnd, GWL_EXSTYLE, new IntPtr(updated));
     }
 
     private void OnBorderMouseDown(object sender, MouseButtonEventArgs e)
@@ -158,6 +180,7 @@ public partial class MainWindow : Window
         base.OnSourceInitialized(e);
         _monitor.TextCopied += text => ClipText.Text = text;
         _monitor.Start(this);
+        ApplyClickThrough(_settings.ClickThrough);
     }
 
     protected override void OnClosing(CancelEventArgs e)
