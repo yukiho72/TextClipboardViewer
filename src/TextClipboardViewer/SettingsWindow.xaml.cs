@@ -40,6 +40,7 @@ public partial class SettingsWindow : Window
         FontCombo.SelectedItem = _settings.FontFamily;
         TextColorHex.Text = _settings.TextColor;
         BackColorHex.Text = _settings.BackgroundColor;
+        ClickThroughCheck.IsChecked = _settings.ClickThrough;
         _loading = false;
     }
 
@@ -105,6 +106,11 @@ public partial class SettingsWindow : Window
 
     private void OnLangJa(object sender, RoutedEventArgs e) => _settings.Language = "ja";
     private void OnLangEn(object sender, RoutedEventArgs e) => _settings.Language = "en";
+
+    private void OnClickThroughChanged(object sender, RoutedEventArgs e)
+    {
+        if (!_loading) _settings.ClickThrough = ClickThroughCheck.IsChecked == true;
+    }
 
     private void OnDragMove(object sender, MouseButtonEventArgs e)
     {
