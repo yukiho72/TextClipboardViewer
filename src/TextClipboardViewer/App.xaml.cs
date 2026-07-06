@@ -38,6 +38,12 @@ public partial class App : System.Windows.Application
             if (main.IsVisible) main.Hide();
             else main.Show();
         });
+        var clickThroughItem = new System.Windows.Forms.ToolStripMenuItem(Loc.S("Common_ClickThrough"))
+        {
+            Checked = main.Settings.ClickThrough,
+        };
+        clickThroughItem.Click += (_, _) => main.Settings.ClickThrough = !main.Settings.ClickThrough;
+        menu.Items.Add(clickThroughItem);
         var exitItem = menu.Items.Add(Loc.S("Tray_Exit"), null, (_, _) =>
         {
             main.AllowClose = true;
@@ -46,13 +52,18 @@ public partial class App : System.Windows.Application
         });
         _trayIcon.ContextMenuStrip = menu;
         _trayIcon.DoubleClick += (_, _) => main.Show();
-        // WinForms のメニューは DynamicResource が効かないため、言語変更時に文言を差し替える
+        // WinForms のメニューは DynamicResource が効かないため、言語・状態変更時に手動で同期する
         main.Settings.PropertyChanged += (_, e) =>
         {
             if (e.PropertyName == nameof(Models.AppSettings.Language))
             {
                 toggleItem.Text = Loc.S("Tray_ToggleShow");
                 exitItem.Text = Loc.S("Tray_Exit");
+                clickThroughItem.Text = Loc.S("Common_ClickThrough");
+            }
+            else if (e.PropertyName == nameof(Models.AppSettings.ClickThrough))
+            {
+                clickThroughItem.Checked = main.Settings.ClickThrough;
             }
         };
     }
