@@ -25,4 +25,5 @@
     <sys:String x:Key="Settings_TextColor">Text color</sys:String>
     <sys:String x:Key="Settings_BackColor">Background color</sys:String>
     <sys:String x:Key="Settings_Language">言語 / Language</sys:String>
+    <sys:String x:Key="Common_ClickThrough">Click-through</sys:String>
 </ResourceDictionary>
