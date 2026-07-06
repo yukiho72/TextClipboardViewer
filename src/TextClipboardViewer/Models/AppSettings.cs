@@ -17,6 +17,7 @@ public class AppSettings : INotifyPropertyChanged
     private double _windowWidth = 320;
     private double _windowHeight = 180;
     private string _language = ""; // 空 = 未設定(初回起動時にOSのUI言語から決める)
+    private bool _clickThrough;
 
     public string FontFamily { get => _fontFamily; set => Set(ref _fontFamily, value); }
     public double FontSize { get => _fontSize; set => Set(ref _fontSize, value); }
@@ -29,6 +30,7 @@ public class AppSettings : INotifyPropertyChanged
     public double WindowWidth { get => _windowWidth; set => Set(ref _windowWidth, value); }
     public double WindowHeight { get => _windowHeight; set => Set(ref _windowHeight, value); }
     public string Language { get => _language; set => Set(ref _language, value); }
+    public bool ClickThrough { get => _clickThrough; set => Set(ref _clickThrough, value); }
 
     public event PropertyChangedEventHandler? PropertyChanged;
 

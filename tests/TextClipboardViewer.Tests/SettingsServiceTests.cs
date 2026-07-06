@@ -39,6 +39,7 @@ public class SettingsServiceTests : IDisposable
             TextShadow = true,
             WindowLeft = 50, WindowTop = 60, WindowWidth = 400, WindowHeight = 250,
             Language = "en",
+            ClickThrough = true,
         };
         svc.Save(s);
 
@@ -54,6 +55,7 @@ public class SettingsServiceTests : IDisposable
         Assert.Equal(400, loaded.WindowWidth);
         Assert.Equal(250, loaded.WindowHeight);
         Assert.Equal("en", loaded.Language);
+        Assert.True(loaded.ClickThrough);
     }
 
     [Fact]
