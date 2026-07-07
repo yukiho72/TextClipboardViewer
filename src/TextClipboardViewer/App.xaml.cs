@@ -38,12 +38,15 @@ public partial class App : System.Windows.Application
             if (main.IsVisible) main.Hide();
             else main.Show();
         });
+        var clearItem = menu.Items.Add(Loc.S("Tray_Clear"), null, (_, _) => main.ClearClipboard());
+        var testWriteItem = menu.Items.Add(Loc.S("Tray_TestWrite"), null, (_, _) => main.WriteTestText());
         var clickThroughItem = new System.Windows.Forms.ToolStripMenuItem(Loc.S("Common_ClickThrough"))
         {
             Checked = main.Settings.ClickThrough,
         };
         clickThroughItem.Click += (_, _) => main.Settings.ClickThrough = !main.Settings.ClickThrough;
         menu.Items.Add(clickThroughItem);
+        menu.Items.Add(new System.Windows.Forms.ToolStripSeparator());
         var exitItem = menu.Items.Add(Loc.S("Tray_Exit"), null, (_, _) =>
         {
             main.AllowClose = true;
@@ -58,6 +61,8 @@ public partial class App : System.Windows.Application
             if (e.PropertyName == nameof(Models.AppSettings.Language))
             {
                 toggleItem.Text = Loc.S("Tray_ToggleShow");
+                clearItem.Text = Loc.S("Tray_Clear");
+                testWriteItem.Text = Loc.S("Tray_TestWrite");
                 exitItem.Text = Loc.S("Tray_Exit");
                 clickThroughItem.Text = Loc.S("Common_ClickThrough");
             }
