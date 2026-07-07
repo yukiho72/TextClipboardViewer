@@ -148,13 +148,22 @@ public partial class MainWindow : Window
         HoverButtons.BeginAnimation(OpacityProperty,
             new DoubleAnimation(to, TimeSpan.FromMilliseconds(150)));
 
-    private void OnClearClick(object sender, RoutedEventArgs e)
+    private void OnClearClick(object sender, RoutedEventArgs e) => ClearClipboard();
+
+    /// <summary>クリップボードを空にする(🗑ボタン・トレイ共用)。失敗時(他プロセスがロック中)は表示を変えない。</summary>
+    internal void ClearClipboard()
     {
-        // クリア失敗時(他プロセスがロック中)は表示を変えない
         if (ClipboardMonitor.TryClear())
         {
             ClipText.Text = string.Empty;
         }
+    }
+
+    /// <summary>固定文＋現在時刻をクリップボードに書き込む。表示は監視イベントが更新する。</summary>
+    internal void WriteTestText()
+    {
+        var text = Loc.S("Common_TestText") + " " + DateTime.Now.ToString("HH:mm:ss");
+        ClipboardMonitor.TryWrite(text);
     }
 
     private void OnSettingsClick(object sender, RoutedEventArgs e)
