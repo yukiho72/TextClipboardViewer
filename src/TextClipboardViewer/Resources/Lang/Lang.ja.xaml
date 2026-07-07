@@ -26,4 +26,7 @@
     <sys:String x:Key="Settings_BackColor">背景色</sys:String>
     <sys:String x:Key="Settings_Language">言語 / Language</sys:String>
     <sys:String x:Key="Common_ClickThrough">クリック透過</sys:String>
+    <sys:String x:Key="Tray_Clear">クリップボードをクリア</sys:String>
+    <sys:String x:Key="Tray_TestWrite">テスト書き込み</sys:String>
+    <sys:String x:Key="Common_TestText">TextClipboardViewer 表示中</sys:String>
 </ResourceDictionary>
