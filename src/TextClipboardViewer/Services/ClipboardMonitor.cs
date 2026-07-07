@@ -78,6 +78,24 @@ public class ClipboardMonitor : IDisposable
         return false;
     }
 
+    /// <summary>テキストを書き込む。成功したら true。</summary>
+    public static bool TryWrite(string text)
+    {
+        for (var i = 0; i < RetryCount; i++)
+        {
+            try
+            {
+                Clipboard.SetText(text);
+                return true;
+            }
+            catch (COMException)
+            {
+                Thread.Sleep(RetryDelayMs);
+            }
+        }
+        return false;
+    }
+
     public void Dispose()
     {
         if (_source == null) return;
