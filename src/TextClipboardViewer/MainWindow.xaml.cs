@@ -1,5 +1,6 @@
 using System.ComponentModel;
 using System.Runtime.InteropServices;
+using Microsoft.Win32;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
@@ -21,6 +22,7 @@ public partial class MainWindow : Window
     private readonly ClipboardMonitor _monitor = new();
     private SettingsWindow? _settingsWindow;
     private readonly DispatcherTimer _saveTimer;
+    private readonly DispatcherTimer _topmostTimer;
 
     /// <summary>トレイの「終了」からのみ true にする。false の間は Close が非表示になる。</summary>
     internal bool AllowClose { get; set; }
@@ -56,7 +58,33 @@ public partial class MainWindow : Window
             _saveTimer.Stop();
             _saveTimer.Start();
         };
+
+        // WPFのTopmostは他アプリの最前面ウィンドウ・解像度変更・セッション復帰等で
+        // OS側の最前面フラグを失うことがあるため、毎秒監視して失われていたら復帰する
+        _topmostTimer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(1) };
+        _topmostTimer.Tick += (_, _) => EnsureTopmost();
+        _topmostTimer.Start();
+        // 画面構成変更・ロック解除/セッション切替の直後は最前面が外れやすいので即復帰
+        SystemEvents.DisplaySettingsChanged += OnDisplaySettingsChanged;
+        SystemEvents.SessionSwitch += OnSessionSwitch;
+
         ApplySettings();
+    }
+
+    private void OnDisplaySettingsChanged(object? sender, EventArgs e) =>
+        Dispatcher.BeginInvoke(EnsureTopmost);
+
+    private void OnSessionSwitch(object? sender, SessionSwitchEventArgs e) =>
+        Dispatcher.BeginInvoke(EnsureTopmost);
+
+    /// <summary>最前面が失われていたら、フォーカスを奪わずに最前面へ復帰させる。</summary>
+    private void EnsureTopmost()
+    {
+        var hwnd = new WindowInteropHelper(this).Handle;
+        if (hwnd == IntPtr.Zero) return; // HWND未生成
+        var exStyle = GetWindowLongPtr(hwnd, GWL_EXSTYLE).ToInt64();
+        if (!ShouldReassertTopmost(exStyle)) return;
+        SetWindowPos(hwnd, HWND_TOPMOST, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE | SWP_NOACTIVATE);
     }
 
     private void ApplySettings()
@@ -93,12 +121,24 @@ public partial class MainWindow : Window
 
     private const int GWL_EXSTYLE = -20;
     private const int WS_EX_TRANSPARENT = 0x20;
+    private const int WS_EX_TOPMOST = 0x8;
+    private static readonly IntPtr HWND_TOPMOST = new(-1);
+    private const uint SWP_NOSIZE = 0x1;
+    private const uint SWP_NOMOVE = 0x2;
+    private const uint SWP_NOACTIVATE = 0x10;
 
     [DllImport("user32.dll", EntryPoint = "GetWindowLongPtrW")]
     private static extern IntPtr GetWindowLongPtr(IntPtr hwnd, int index);
 
     [DllImport("user32.dll", EntryPoint = "SetWindowLongPtrW")]
     private static extern IntPtr SetWindowLongPtr(IntPtr hwnd, int index, IntPtr newLong);
+
+    [DllImport("user32.dll")]
+    private static extern bool SetWindowPos(IntPtr hwnd, IntPtr hwndInsertAfter,
+        int x, int y, int cx, int cy, uint flags);
+
+    /// <summary>OSの最前面フラグ(WS_EX_TOPMOST)が失われているときだけ再アサートすべき。</summary>
+    public static bool ShouldReassertTopmost(long exStyle) => (exStyle & WS_EX_TOPMOST) == 0;
 
     /// <summary>WS_EX_TRANSPARENT を付け外ししてマウス操作の透過を切り替える。</summary>
     private void ApplyClickThrough(bool enabled)
@@ -202,6 +242,9 @@ public partial class MainWindow : Window
             return;
         }
         _saveTimer.Stop();
+        _topmostTimer.Stop();
+        SystemEvents.DisplaySettingsChanged -= OnDisplaySettingsChanged;
+        SystemEvents.SessionSwitch -= OnSessionSwitch;
         _settings.WindowLeft = Left;
         _settings.WindowTop = Top;
         _settings.WindowWidth = Width;
