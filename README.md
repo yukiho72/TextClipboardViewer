@@ -11,7 +11,7 @@
 | ファイル | サイズ | 必要環境 |
 |---|---|---|
 | `TextClipboardViewer-*-standalone-win-x64.zip` | 約65MB | なし(.NET同梱) |
-| `TextClipboardViewer-*-net8-win-x64.zip` | 約85KB | [.NET 8 デスクトップランタイム](https://dotnet.microsoft.com/download/dotnet/8.0) |
+| `TextClipboardViewer-*-net10-win-x64.zip` | 約85KB | [.NET 10 デスクトップランタイム](https://dotnet.microsoft.com/download/dotnet/10.0) |
 
 ## 機能
 
@@ -31,7 +31,7 @@
 
 ```powershell
 dotnet build -c Release
-.\src\TextClipboardViewer\bin\Release\net8.0-windows\TextClipboardViewer.exe
+.\src\TextClipboardViewer\bin\Release\net10.0-windows\TextClipboardViewer.exe
 ```
 
 ## テスト

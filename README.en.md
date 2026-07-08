@@ -11,7 +11,7 @@ Get a zip from the [Releases](https://github.com/yukiho72/TextClipboardViewer/re
 | File | Size | Requirements |
 |---|---|---|
 | `TextClipboardViewer-*-standalone-win-x64.zip` | ~65MB | None (.NET bundled) |
-| `TextClipboardViewer-*-net8-win-x64.zip` | ~85KB | [.NET 8 Desktop Runtime](https://dotnet.microsoft.com/download/dotnet/8.0) |
+| `TextClipboardViewer-*-net10-win-x64.zip` | ~85KB | [.NET 10 Desktop Runtime](https://dotnet.microsoft.com/download/dotnet/10.0) |
 
 ## Features
 
@@ -31,7 +31,7 @@ Get a zip from the [Releases](https://github.com/yukiho72/TextClipboardViewer/re
 
 ```powershell
 dotnet build -c Release
-.\src\TextClipboardViewer\bin\Release\net8.0-windows\TextClipboardViewer.exe
+.\src\TextClipboardViewer\bin\Release\net10.0-windows\TextClipboardViewer.exe
 ```
 
 ## Test
