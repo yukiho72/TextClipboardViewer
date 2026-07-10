@@ -54,7 +54,8 @@ public partial class App : System.Windows.Application
             Shutdown();
         });
         _trayIcon.ContextMenuStrip = menu;
-        _trayIcon.DoubleClick += (_, _) => main.Show();
+        // ダブルクリックはメニューの「クリップボードをクリア」と同じ動作にする
+        _trayIcon.DoubleClick += (_, _) => main.ClearClipboard();
         // WinForms のメニューは DynamicResource が効かないため、言語・状態変更時に手動で同期する
         main.Settings.PropertyChanged += (_, e) =>
         {

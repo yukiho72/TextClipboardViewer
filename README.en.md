@@ -24,7 +24,7 @@ Get a zip from the [Releases](https://github.com/yukiho72/TextClipboardViewer/re
 - Real-time adjustment of font, font size, text color, background color, and opacity via sliders
 - Japanese / English UI (follows the OS language on first run)
 - Settings auto-saved to `%APPDATA%\TextClipboardViewer\settings.json`
-- Runs in the system tray. Right-click menu: show/hide, clear clipboard, test write, toggle click-through, exit
+- Runs in the system tray. Right-click menu: show/hide, clear clipboard, test write, toggle click-through, exit. Double-clicking the tray icon also clears the clipboard
 - Test write (writes a fixed string plus the current time to the clipboard). Confirms whether the window is showing and where it is, even in click-through mode with a transparent background
 
 ## Build and run from source
