@@ -23,6 +23,7 @@ public partial class MainWindow : Window
     private SettingsWindow? _settingsWindow;
     private readonly DispatcherTimer _saveTimer;
     private readonly DispatcherTimer _topmostTimer;
+    private bool _boundsRestored;
 
     /// <summary>トレイの「終了」からのみ true にする。false の間は Close が非表示になる。</summary>
     internal bool AllowClose { get; set; }
@@ -69,6 +70,24 @@ public partial class MainWindow : Window
         SystemEvents.SessionSwitch += OnSessionSwitch;
 
         ApplySettings();
+        // これ以降の移動・リサイズはユーザー操作なので保存対象にする(復元中の再保存は防ぐ)
+        _boundsRestored = true;
+    }
+
+    protected override void OnLocationChanged(EventArgs e)
+    {
+        base.OnLocationChanged(e);
+        if (!_boundsRestored) return;
+        _settings.WindowLeft = Left;
+        _settings.WindowTop = Top;
+    }
+
+    protected override void OnRenderSizeChanged(SizeChangedInfo info)
+    {
+        base.OnRenderSizeChanged(info);
+        if (!_boundsRestored) return;
+        _settings.WindowWidth = Width;
+        _settings.WindowHeight = Height;
     }
 
     private void OnDisplaySettingsChanged(object? sender, EventArgs e) =>

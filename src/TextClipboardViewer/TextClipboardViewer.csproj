@@ -8,6 +8,10 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <RootNamespace>TextClipboardViewer</RootNamespace>
     <AssemblyName>TextClipboardViewer</AssemblyName>
+    <!-- マルチモニタで保存位置が別モニタ/別DPIへずれないようPerMonitorV2を宣言 -->
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+    <!-- 実体はWPFでDPI認識はmanifestで宣言する必要があるため、WinFormsアナライザーのWFO0003は抑制 -->
+    <NoWarn>$(NoWarn);WFO0003</NoWarn>
   </PropertyGroup>
   <ItemGroup>
     <!-- NotifyIconのためにWinForms参照は必要だが、implicit usingsの
